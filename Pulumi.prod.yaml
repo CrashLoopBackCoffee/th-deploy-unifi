@@ -13,7 +13,7 @@ config:
 
     unifi:
       # renovate: datasource=github-releases packageName=jacobalberty/unifi-docker versioning=semver
-      version: 7.5.176
+      version: 9.0.108
       address: 192.168.10.5/24
       vlan: 10
       hostname: unifi.tobiash.net
