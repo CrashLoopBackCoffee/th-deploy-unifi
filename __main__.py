@@ -2,7 +2,9 @@ import pulumi as p
 import pulumi_cloudflare as cloudflare
 import pulumi_proxmoxve as proxmoxve
 
+from unifi.acme import create_certificate
 from unifi.config import ComponentConfig
+from unifi.unifi import create_unifi
 
 component_config = ComponentConfig.model_validate(p.Config().get_object('config'))
 
@@ -24,3 +26,9 @@ proxmox_provider = proxmoxve.Provider(
         'agent': True,
     },
 )
+
+# Create TLS certs
+certificate = create_certificate(component_config)
+
+# Create the Unifi VM
+create_unifi(component_config, certificate, proxmox_provider)

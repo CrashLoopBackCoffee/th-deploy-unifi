@@ -1,3 +1,4 @@
+import ipaddress
 import pathlib
 
 import deploy_base.model
@@ -35,9 +36,26 @@ class ProxmoxConfig(StrictBaseModel):
     insecure: bool = False
 
 
+class UnifiConfig(StrictBaseModel):
+    version: str
+    cloud_image: str = pydantic.Field(
+        alias='cloud-image',
+        default='https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img',
+    )
+    address: ipaddress.IPv4Interface
+    vlan: int | None = None
+    hostname: str
+    ssh_public_key: str = pydantic.Field(alias='ssh-public-key')
+    cores: int = 2
+    memory_min: int = 1024
+    memory_max: int = 2048
+    disk_size: int = 20
+
+
 class ComponentConfig(StrictBaseModel):
     cloudflare: deploy_base.model.CloudflareConfig
     proxmox: ProxmoxConfig
+    unifi: UnifiConfig
 
 
 class StackConfig(StrictBaseModel):
